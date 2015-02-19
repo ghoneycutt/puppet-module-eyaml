@@ -3,28 +3,29 @@
 # Module to manage eyaml
 #
 class eyaml (
-  $package_name     = 'hiera-eyaml',
-  $package_provider = 'gem',
-  $package_ensure   = 'present',
-  $keys_dir         = "${::settings::confdir}/keys",
-  $keys_dir_ensure  = 'directory',
-  $keys_dir_owner   = $::settings::user,
-  $keys_dir_group   = $::settings::group,
-  $keys_dir_mode    = '0500',
-  $public_key_path  = '/etc/puppet/keys/public_key.pkcs7.pem',
-  $private_key_path = '/etc/puppet/keys/private_key.pkcs7.pem',
-  $public_key_mode  = '0644',
-  $private_key_mode = '0400',
-  $config_dir       = '/etc/eyaml',
-  $config_dir_owner = 'root',
-  $config_dir_group = 'root',
-  $config_dir_mode  = '0755',
-  $config_ensure    = 'file',
-  $config_path      = '/etc/eyaml/config.yaml',
-  $config_owner     = 'root',
-  $config_group     = 'root',
-  $config_mode      = '0644',
-  $config_options   = {
+  $package_name      = 'hiera-eyaml',
+  $package_provider  = 'gem',
+  $package_ensure    = 'present',
+  $keys_dir          = "${::settings::confdir}/keys",
+  $keys_dir_ensure   = 'directory',
+  $keys_dir_owner    = $::settings::user,
+  $keys_dir_group    = $::settings::group,
+  $keys_dir_mode     = '0500',
+  $public_key_path   = '/etc/puppet/keys/public_key.pkcs7.pem',
+  $private_key_path  = '/etc/puppet/keys/private_key.pkcs7.pem',
+  $public_key_mode   = '0644',
+  $private_key_mode  = '0400',
+  $config_dir        = '/etc/eyaml',
+  $config_dir_ensure = 'directory',
+  $config_dir_owner  = 'root',
+  $config_dir_group  = 'root',
+  $config_dir_mode   = '0755',
+  $config_ensure     = 'file',
+  $config_path       = '/etc/eyaml/config.yaml',
+  $config_owner      = 'root',
+  $config_group      = 'root',
+  $config_mode       = '0644',
+  $config_options    = {
     'pkcs7_public_key'  => '/etc/puppet/keys/public_key.pkcs7.pem',
     'pkcs7_private_key' => '/etc/puppet/keys/private_key.pkcs7.pem',
   },
@@ -46,6 +47,7 @@ class eyaml (
   validate_re($private_key_mode, '^[0-7]{4}$',
       "eyaml::private_key_mode is <${private_key_mode}> and must be a valid four digit mode in octal notation.")
   validate_absolute_path($config_dir)
+  validate_string($config_dir_ensure)
   validate_string($config_dir_owner)
   validate_string($config_dir_group)
   validate_re($config_dir_mode, '^[0-7]{4}$',
@@ -64,7 +66,7 @@ class eyaml (
   }
 
   file { 'eyaml_config_dir':
-    ensure  => directory,
+    ensure  => $config_dir_ensure,
     path    => $config_dir,
     owner   => $config_dir_owner,
     group   => $config_dir_group,
