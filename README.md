@@ -3,10 +3,11 @@
 
 [![Build Status](https://travis-ci.org/ghoneycutt/puppet-module-eyaml.png?branch=master)](https://travis-ci.org/ghoneycutt/puppet-module-eyaml)
 
-Manage [hiera-eyaml](https://github.com/TomPoulton/hiera-eyaml). Meant to be associated with a puppet master. It will
-install the hiera-eyaml gem, create /etc/puppet/keys, generate keys, and manage
-/etc/eyaml/config.yaml. It does not modify your hiera.yaml, which must be done
-to use eyaml. The module is totally configurable through parameters.
+Manage [hiera-eyaml](https://github.com/TomPoulton/hiera-eyaml). Meant to be
+associated with a puppet master. It will install the hiera-eyaml gem, create
+/etc/puppet/keys, generate keys, and manage /etc/eyaml/config.yaml. It does not
+modify your hiera.yaml, which must be done to use eyaml. The module is totally
+configurable through parameters.
 
 ===
 

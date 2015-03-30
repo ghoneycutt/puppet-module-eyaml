@@ -3,32 +3,33 @@
 # Module to manage eyaml
 #
 class eyaml (
-  $package_name      = 'hiera-eyaml',
-  $package_provider  = 'gem',
-  $package_ensure    = 'present',
-  $keys_dir          = "${::settings::confdir}/keys",
-  $keys_dir_ensure   = 'directory',
-  $keys_dir_owner    = $::settings::user,
-  $keys_dir_group    = $::settings::group,
-  $keys_dir_mode     = '0500',
-  $public_key_path   = '/etc/puppet/keys/public_key.pkcs7.pem',
-  $private_key_path  = '/etc/puppet/keys/private_key.pkcs7.pem',
-  $public_key_mode   = '0644',
-  $private_key_mode  = '0400',
-  $config_dir        = '/etc/eyaml',
-  $config_dir_ensure = 'directory',
-  $config_dir_owner  = 'root',
-  $config_dir_group  = 'root',
-  $config_dir_mode   = '0755',
-  $config_ensure     = 'file',
-  $config_path       = '/etc/eyaml/config.yaml',
-  $config_owner      = 'root',
-  $config_group      = 'root',
-  $config_mode       = '0644',
-  $config_options    = {
+  $package_name        = 'hiera-eyaml',
+  $package_provider    = 'gem',
+  $package_ensure      = 'present',
+  $keys_dir            = "${::settings::confdir}/keys",
+  $keys_dir_ensure     = 'directory',
+  $keys_dir_owner      = $::settings::user,
+  $keys_dir_group      = $::settings::group,
+  $keys_dir_mode       = '0500',
+  $public_key_path     = '/etc/puppet/keys/public_key.pkcs7.pem',
+  $private_key_path    = '/etc/puppet/keys/private_key.pkcs7.pem',
+  $public_key_mode     = '0644',
+  $private_key_mode    = '0400',
+  $config_dir          = '/etc/eyaml',
+  $config_dir_ensure   = 'directory',
+  $config_dir_owner    = 'root',
+  $config_dir_group    = 'root',
+  $config_dir_mode     = '0755',
+  $config_ensure       = 'file',
+  $config_path         = '/etc/eyaml/config.yaml',
+  $config_owner        = 'root',
+  $config_group        = 'root',
+  $config_mode         = '0644',
+  $config_options      = {
     'pkcs7_public_key'  => '/etc/puppet/keys/public_key.pkcs7.pem',
     'pkcs7_private_key' => '/etc/puppet/keys/private_key.pkcs7.pem',
   },
+  $manage_eyaml_config = true,
 ) {
 
   validate_string($package_name)
@@ -59,6 +60,13 @@ class eyaml (
       "eyaml::config_mode is <${config_mode}> and must be a valid four digit mode in octal notation.")
   validate_hash($config_options)
 
+  if is_string($manage_eyaml_config) == true {
+    $manage_eyaml_config_bool = str2bool($manage_eyaml_config)
+  } else {
+    $manage_eyaml_config_bool = $manage_eyaml_config
+  }
+  validate_bool($manage_eyaml_config_bool)
+
   package { 'eyaml':
     ensure   => $package_ensure,
     name     => $package_name,
@@ -74,14 +82,16 @@ class eyaml (
     require => Package['eyaml'],
   }
 
-  file { 'eyaml_config':
-    ensure  => $config_ensure,
-    path    => $config_path,
-    content => template('eyaml/config.yaml'),
-    owner   => $config_owner,
-    group   => $config_group,
-    mode    => $config_mode,
-    require => File['eyaml_config_dir'],
+  if $manage_eyaml_config_bool == true {
+    file { 'eyaml_config':
+      ensure  => $config_ensure,
+      path    => $config_path,
+      content => template('eyaml/config.yaml'),
+      owner   => $config_owner,
+      group   => $config_group,
+      mode    => $config_mode,
+      require => File['eyaml_config_dir'],
+    }
   }
 
   file { 'eyaml_keys_dir':
