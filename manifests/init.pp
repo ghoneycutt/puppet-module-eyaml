@@ -29,6 +29,7 @@ class eyaml (
     'pkcs7_public_key'  => '/etc/puppet/keys/public_key.pkcs7.pem',
     'pkcs7_private_key' => '/etc/puppet/keys/private_key.pkcs7.pem',
   },
+  $createkeys_path     = '/bin:/usr/bin:/sbin:/usr/sbin:/usr/local/bin',
   $manage_eyaml_config = true,
 ) {
 
@@ -59,6 +60,7 @@ class eyaml (
   validate_re($config_mode, '^[0-7]{4}$',
       "eyaml::config_mode is <${config_mode}> and must be a valid four digit mode in octal notation.")
   validate_hash($config_options)
+  validate_string($createkeys_path)
 
   if is_string($manage_eyaml_config) == true {
     $manage_eyaml_config_bool = str2bool($manage_eyaml_config)
@@ -104,7 +106,7 @@ class eyaml (
   }
 
   exec { 'eyaml_createkeys':
-    path    => '/bin:/usr/bin:/sbin:/usr/sbin',
+    path    => $createkeys_path,
     command => "eyaml createkeys --pkcs7-private-key=${private_key_path} --pkcs7-public-key=${public_key_path}",
     creates => $private_key_path,
     require => File['eyaml_keys_dir'],

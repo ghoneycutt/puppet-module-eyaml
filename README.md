@@ -17,3 +17,4 @@ This module is built for use with Puppet v3 with Ruby versions 1.8.7, 1.9.3,
 2.0.0 and 2.1.0. It is supported on the following platforms.
 
 * EL 6
+* EL 7
