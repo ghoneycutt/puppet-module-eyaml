@@ -9,7 +9,7 @@ end
 gem 'metadata-json-lint'
 gem 'puppetlabs_spec_helper', '>= 0.1.0'
 gem 'facter', '>= 1.7.0'
-gem 'rspec-puppet', '~>1.0'
+gem 'rspec-puppet'
 gem 'puppet-lint', :git => 'https://github.com/rodjek/puppet-lint.git'
 
 # rspec must be v2 for ruby 1.8.7
