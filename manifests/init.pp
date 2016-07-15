@@ -3,31 +3,32 @@
 # Module to manage eyaml
 #
 class eyaml (
-  $package_name        = 'hiera-eyaml',
-  $package_provider    = 'gem',
-  $package_ensure      = 'present',
-  $keys_dir            = "${::settings::confdir}/keys",
-  $keys_dir_owner      = $::settings::user,
-  $keys_dir_group      = $::settings::group,
-  $keys_dir_mode       = '0500',
-  $public_key_path     = '/etc/puppet/keys/public_key.pkcs7.pem',
-  $private_key_path    = '/etc/puppet/keys/private_key.pkcs7.pem',
-  $public_key_mode     = '0644',
-  $private_key_mode    = '0400',
-  $config_dir          = '/etc/eyaml',
-  $config_dir_owner    = 'root',
-  $config_dir_group    = 'root',
-  $config_dir_mode     = '0755',
-  $config_path         = '/etc/eyaml/config.yaml',
-  $config_owner        = 'root',
-  $config_group        = 'root',
-  $config_mode         = '0644',
-  $config_options      = {
+  $package_name         = 'hiera-eyaml',
+  $package_provider     = 'gem',
+  $package_ensure       = 'present',
+  $keys_dir             = '/etc/puppet/keys',
+  $keys_dir_owner       = 'root',
+  $keys_dir_group       = 'root',
+  $keys_dir_mode        = '0500',
+  $public_key_path      = '/etc/puppet/keys/public_key.pkcs7.pem',
+  $private_key_path     = '/etc/puppet/keys/private_key.pkcs7.pem',
+  $public_key_mode      = '0644',
+  $private_key_mode     = '0400',
+  $config_dir           = '/etc/eyaml',
+  $config_dir_owner     = 'root',
+  $config_dir_group     = 'root',
+  $config_dir_mode      = '0755',
+  $config_path          = '/etc/eyaml/config.yaml',
+  $config_owner         = 'root',
+  $config_group         = 'root',
+  $config_mode          = '0644',
+  $config_options       = {
     'pkcs7_public_key'  => '/etc/puppet/keys/public_key.pkcs7.pem',
     'pkcs7_private_key' => '/etc/puppet/keys/private_key.pkcs7.pem',
   },
-  $eyaml_path          = '/bin:/usr/bin:/sbin:/usr/sbin:/usr/local/bin',
-  $manage_eyaml_config = true,
+  $eyaml_path           = '/bin:/usr/bin:/sbin:/usr/sbin:/usr/local/bin',
+  $manage_eyaml_config  = true,
+  $manage_keys_creation = true,
 ) {
 
   validate_string($package_name)
@@ -63,6 +64,13 @@ class eyaml (
     $manage_eyaml_config_bool = $manage_eyaml_config
   }
   validate_bool($manage_eyaml_config_bool)
+
+  if is_string($manage_keys_creation) == true {
+    $manage_keys_creation_bool = str2bool($manage_keys_creation)
+  } else {
+    $manage_keys_creation_bool = $manage_keys_creation
+  }
+  validate_bool($manage_keys_creation_bool)
 
   package { 'eyaml':
     ensure   => $package_ensure,
@@ -100,11 +108,13 @@ class eyaml (
     require => Package['eyaml'],
   }
 
-  exec { 'eyaml_createkeys':
-    path    => $eyaml_path,
-    command => "eyaml createkeys --pkcs7-private-key=${private_key_path} --pkcs7-public-key=${public_key_path}",
-    creates => $private_key_path,
-    require => File['eyaml_keys_dir'],
+  if $manage_keys_creation_bool == true {
+    exec { 'eyaml_createkeys':
+      path    => $eyaml_path,
+      command => "eyaml createkeys --pkcs7-private-key=${private_key_path} --pkcs7-public-key=${public_key_path}",
+      creates => $private_key_path,
+      require => File['eyaml_keys_dir'],
+    }
   }
 
   file { 'eyaml_publickey':

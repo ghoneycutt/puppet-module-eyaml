@@ -16,6 +16,9 @@ Lint/AssignmentInCondition:
 Metrics/LineLength:
   Enabled: false
 
+Style/IfUnlessModifier:
+  Enabled: false
+
 # This is a good idea, but does not line up the rest of the lines making it
 # harder to read
 Style/IndentHash:

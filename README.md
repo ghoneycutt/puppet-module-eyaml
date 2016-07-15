@@ -193,15 +193,6 @@ type: hash
 },
 ```
 
-manage_eyaml_config
--------------------
-Manage eyaml config file.
-
-type: boolean
-
-- *Default*: true
-
-
 eyaml_path
 ----------
 Path statement to find eyaml command.
@@ -210,8 +201,16 @@ type: string
 
 - *Default*: '/bin:/usr/bin:/sbin:/usr/sbin:/usr/local/bin'
 
-manage_keys
------------
+manage_eyaml_config
+-------------------
+Manage eyaml config file.
+
+type: boolean
+
+- *Default*: true
+
+manage_keys_creation
+--------------------
 Manage creation of eyaml keys.
 
 type: boolean
