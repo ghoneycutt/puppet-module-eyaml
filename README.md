@@ -14,7 +14,7 @@ configurable through parameters.
 # Compatibility
 ---------------
 This module is built for use with Puppet v3 (with and without the future parse)
-and v4 and supports Ruby v1.8.7 (on Puppet v3 only), v1.9.3, v2.0.0 and v2.1.0.
+and v4 and supports Ruby v1.9.3, v2.0.0 and v2.1.0.
 
 It is supported on the following platforms.
 
