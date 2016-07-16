@@ -13,18 +13,22 @@ configurable through parameters.
 
 # Compatibility
 ---------------
-This module is built for use with Puppet v3 (with and without the future parse)
-and v4 and supports Ruby v1.9.3, v2.0.0 and v2.1.0.
+This module is built for use with Puppet v3 (with and without the future
+parser) and v4 and supports Ruby versions v1.9.3, v2.0.0 and v2.1.0, where
+supported by Puppet.
 
 It is supported on the following platforms.
 
 * EL 6
 * EL 7
+* Ubuntu 14.04 LTS
 
 ===
 
 # Parameters
 ------------
+
+If based on Puppet version, then the path will change. Puppet v3 is `/etc/puppet` and Puppet v4 is `/etc/puppetlabs`.
 
 package_name
 ------------
@@ -40,7 +44,7 @@ Package provider to install eyaml.
 
 type: string
 
-- *Default*: 'gem'
+- *Default*: Based on Puppet version. Puppet v3 is 'gem' and Puppet v4 is 'puppet_gem'.
 
 package_ensure
 --------------
@@ -56,7 +60,7 @@ Directory containing public and private keys.
 
 type: string
 
-- *Default*: '/etc/puppet/keys'
+- *Default*: '${puppet_path}/keys'
 
 keys_dir_owner
 --------------
@@ -88,7 +92,7 @@ Absolute path to the public key.
 
 type: string
 
-- *Default*: '/etc/puppet/keys/public_key.pkcs7.pem'
+- *Default*: '${puppet_path}/keys/public_key.pkcs7.pem'
 
 private_key_path
 ----------------
@@ -96,7 +100,7 @@ Absolute path to the private key.
 
 type: string
 
-- *Default*: '/etc/puppet/keys/private_key.pkcs7.pem'
+- *Default*: '${puppet_path}/keys/private_key.pkcs7.pem'
 
 public_key_mode
 ---------------
@@ -188,8 +192,8 @@ type: hash
 
 ```
 {
-  'pkcs7_public_key'  => '/etc/puppet/keys/public_key.pkcs7.pem',
-  'pkcs7_private_key' => '/etc/puppet/keys/private_key.pkcs7.pem',
+  'pkcs7_public_key'  => '${puppet_path}/keys/public_key.pkcs7.pem',
+  'pkcs7_private_key' => '${puppet_path}/keys/private_key.pkcs7.pem',
 },
 ```
 

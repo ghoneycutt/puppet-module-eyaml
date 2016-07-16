@@ -1,6 +1,6 @@
 <% h = {} -%>
-<% @config_options.keys.sort.each do |key| -%>
-<% value = @config_options[key] -%>
+<% @config_options_real.keys.sort.each do |key| -%>
+<% value = @config_options_real[key] -%>
 <% h[key] = value -%>
 <% end -%>
 <%= h.to_yaml %>
