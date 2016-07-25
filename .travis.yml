@@ -24,6 +24,9 @@ script: 'SPEC_OPTS="--format documentation" bundle exec rake $CHECK'
 
 matrix:
   fast_finish: true
+  exclude:
+    - rvm: 1.9.3
+      env: PUPPET_GEM_VERSION="~> 4" CHECK=rubocop
 
 notifications:
   email: false
