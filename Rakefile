@@ -10,7 +10,7 @@ end
 PuppetLint.configuration.send('disable_80chars')
 PuppetLint.configuration.send('disable_140chars')
 PuppetLint.configuration.relative = true
-PuppetLint.configuration.ignore_paths = %w('spec/**/*.pp', 'pkg/**/*.pp')
+PuppetLint.configuration.ignore_paths = %w(spec/**/*.pp pkg/**/*.pp)
 
 desc 'Validate manifests, templates, and ruby files'
 task :validate do
