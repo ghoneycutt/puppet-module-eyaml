@@ -28,7 +28,7 @@ class eyaml (
   $manage_keys_creation = true,
 ) {
 
-  if versioncmp($::puppetversion, '3.0') > 0 {
+  if versioncmp("${::puppetversion}", '3.0') > 0 { # lint:ignore:only_variable_string
     # puppet v4
     $default_package_provider = 'puppet_gem'
     $default_keys_dir         = '/etc/puppetlabs/keys'
