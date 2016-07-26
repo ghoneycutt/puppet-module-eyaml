@@ -35,13 +35,13 @@ describe 'eyaml' do
 
     it do
       should contain_file('eyaml_config').with_content(
-        %r{^(.*)pkcs7_private_key:(.+)"/etc/puppet/keys/private_key\.pkcs7\.pem"$}
+        %r{^(.*)pkcs7_private_key:(.+)"?/etc/puppet/keys/private_key\.pkcs7\.pem"?$}
       )
     end
 
     it do
       should contain_file('eyaml_config').with_content(
-        %r{^(.*)pkcs7_public_key:(.+)"/etc/puppet/keys/public_key\.pkcs7\.pem"$}
+        %r{^(.*)pkcs7_public_key:(.+)"?/etc/puppet/keys/public_key\.pkcs7\.pem"?$}
       )
     end
 
